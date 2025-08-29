@@ -1,4 +1,4 @@
-name: Get AWS Temporary Credentials
+name: Get AWS Temporary Credentials and Flag
 
 on:
   workflow_dispatch: # Trigger manually from GitHub Actions UI
@@ -28,3 +28,13 @@ jobs:
           echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID"
           echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY"
           echo "AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN"
+
+      - name: Invoke Lambda to Get Flag
+        run: |
+          aws lambda invoke \
+            --function-name get-flag \
+            --region us-east-1 \
+            --output json \
+            response.json
+          echo "Flag Response:"
+          cat response.json
